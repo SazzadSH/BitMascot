@@ -1,47 +1,69 @@
+/*
+RSS Content fetching module
+*/
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class Fetch {
+public class Fetch
+{
     private static final String USER_AGENT = "Mozilla/5.0";
 
-
-    private void fetchData(String requestURL, String location, String fileName) throws IOException {
+    //Method to connect, fetch and write RSS data
+    private void fetchData(String requestURL, String location, String file) throws IOException
+    {
+        //URL connection
         URL url = new URL(requestURL);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
         connection.setRequestMethod("GET");
         connection.setRequestProperty("User-Agent", USER_AGENT);
+
         int responseCode = connection.getResponseCode();
-        if (responseCode == HttpURLConnection.HTTP_OK) {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(
-                    connection.getInputStream()));
+
+        if (responseCode == HttpURLConnection.HTTP_OK) 
+        {
+            //RSS Content
             String inputLine;
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuffer response = new StringBuffer();
 
-            while ((inputLine = bufferedReader.readLine()) != null) {
+            while ((inputLine = bufferedReader.readLine()) != null)
+            {
                 response.append(inputLine);
             }
+
             bufferedReader.close();
 
+            //Writing D:/a.rss
             FileUtil fileWriter = new FileUtil();
-            fileWriter.writer(location, fileName, response.toString());
-        } else {
-            System.out.println("GET request not worked");
+            fileWriter.writer(location, file, response.toString());
+        }
+        else
+        {
+            System.out.println("Request Failed!");
         }
     }
 
-    public void fetcher(String requestURL, String location, String fileName) {
-        try {
-            System.out.println("Starting Data Fetching...");
-            long startTime = System.nanoTime();
-            this.fetchData(requestURL, location, fileName);
-            long endTime = System.nanoTime();
-            System.out.println("Data Fetching Completed");
-            long duration = (endTime - startTime) / 1000000;
-            System.out.println("Took " + duration + " milliseconds to execute the Fetch!!!");
-        } catch (IOException e) {
-            System.out.println("Something Went Wrong While Fetching Data!! " + e);
+    //Data fetching initiation
+    public void fetcher(String requestURL, String location, String file)
+    {
+        long startTime, endTime, duration;
+        try
+        {
+            System.out.println("Fetching RSS content...");
+            startTime = System.nanoTime();
+            this.fetchData(requestURL, location, file);
+
+            endTime = System.nanoTime();
+            System.out.println("Fetching done!");
+
+            duration = (endTime - startTime) / 1000000;
+        }
+        catch (IOException e)
+        {
+            System.out.println("Fetching failed!" + e);
         }
     }
 }
