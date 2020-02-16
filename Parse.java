@@ -37,14 +37,8 @@ public class Parse
         try
         {
             System.out.println("Parsing JPEG Reference...");
-            startTime = System.nanoTime();
             this.parseData(location, file);
-
-            endTime = System.nanoTime();
             System.out.println("Parsing done!");
-
-            duration = (endTime - startTime) / 1000000;
-            //System.out.println("Took " + duration + " milliseconds to execute the Parse!!!");
         }
         catch (IOException e)
         {

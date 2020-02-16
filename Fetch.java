@@ -49,17 +49,11 @@ public class Fetch
     //Data fetching initiation
     public void fetcher(String requestURL, String location, String file)
     {
-        long startTime, endTime, duration;
         try
         {
             System.out.println("Fetching RSS content...");
-            startTime = System.nanoTime();
             this.fetchData(requestURL, location, file);
-
-            endTime = System.nanoTime();
             System.out.println("Fetching done!");
-
-            duration = (endTime - startTime) / 1000000;
         }
         catch (IOException e)
         {
